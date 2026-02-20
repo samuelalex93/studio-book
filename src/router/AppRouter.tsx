@@ -1,19 +1,21 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { Login } from "../pages/Login";
 import { Dashboard } from "../pages/Dashboard";
+import { Search } from "../pages/Search";
 import { Appointments } from "../pages/Appointments";
+import { Profile } from "../pages/Profile";
 import { Navbar } from "../components/Navbar";
 
 function RouterContent() {
   const location = useLocation();
-  const showNavbar = location.pathname !== "/";
+  const showNavbar = location.pathname !== "/asa";
 
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/appointments" element={<Appointments />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       {showNavbar && <Navbar />}
     </>

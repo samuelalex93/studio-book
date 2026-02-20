@@ -1,4 +1,4 @@
-import { Home, Heart, Calendar, User } from 'lucide-react';
+import { Home, Search, Calendar, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export function Navbar() {
@@ -6,8 +6,8 @@ export function Navbar() {
   const location = useLocation();
 
   const navItems = [
-    { id: 1, name: 'Início', icon: Home, path: '/dashboard' },
-    { id: 2, name: 'Favoritos', icon: Heart, path: '/favorites' },
+    { id: 1, name: 'Início', icon: Home, path: '/' },
+    { id: 2, name: 'Buscar', icon: Search, path: '/search' },
     { id: 3, name: 'Agendamentos', icon: Calendar, path: '/appointments' },
     { id: 4, name: 'Perfil', icon: User, path: '/profile' },
   ];

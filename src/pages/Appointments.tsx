@@ -1,4 +1,5 @@
 import { Calendar, Clock, Star, ChevronRight } from 'lucide-react';
+import { COLORS } from '../constants/colors';
 
 export function Appointments() {
   const appointments = [
@@ -46,12 +47,18 @@ export function Appointments() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5]">
+    <div style={{ backgroundColor: COLORS.light }}>
       {/* Header */}
-      <div className="bg-[#111827] text-white p-6 lg:p-12 rounded-b-3xl">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl lg:text-5xl font-bold mb-2">Meus Agendamentos</h1>
-          <p className="text-gray-300 lg:text-lg">Você tem {appointments.length} agendamentos próximos</p>
+      <div className="sticky top-0 z-40 border-b border-[#E5E5E5] p-4 lg:p-6" style={{ backgroundColor: COLORS.light }}>
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-2xl lg:text-4xl font-bold mb-1" style={{ color: COLORS.text }}>Meus Agendamentos</h1>
+          <p className="text-sm lg:text-base" style={{ color: COLORS.textSecondary }}>
+            Você tem{' '}
+            <span style={{ color: COLORS.accent, fontWeight: 'bold', fontSize: '1.1em' }}>
+              {appointments.length} agendamentos
+            </span>
+            {' '}próximos
+          </p>
         </div>
       </div>
 
@@ -59,13 +66,24 @@ export function Appointments() {
       <div className="max-w-7xl mx-auto p-4 lg:p-8 space-y-4 lg:space-y-6">
         {/* Filter/Tabs */}
         <div className="flex gap-2 overflow-x-auto pb-2 lg:gap-4">
-          <button className="px-4 lg:px-6 py-2 lg:py-3 bg-[#F97316] text-white rounded-full text-sm lg:text-base font-semibold whitespace-nowrap hover:bg-[#E67E0D] transition-colors">
+          <button 
+            className="px-4 lg:px-6 py-2 lg:py-3 text-white rounded-full text-sm lg:text-base font-semibold whitespace-nowrap transition-colors"
+            style={{ backgroundColor: COLORS.accent }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.accentDark)}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.accent)}
+          >
             Todos ({appointments.length})
           </button>
-          <button className="px-4 lg:px-6 py-2 lg:py-3 bg-white text-[#111827] rounded-full text-sm lg:text-base font-semibold border-2 border-[#E5E5E5] whitespace-nowrap hover:bg-gray-50 transition-colors">
+          <button 
+            className="px-4 lg:px-6 py-2 lg:py-3 bg-white rounded-full text-sm lg:text-base font-semibold border-2 whitespace-nowrap hover:bg-gray-50 transition-colors"
+            style={{ borderColor: COLORS.mid, color: COLORS.text }}
+          >
             Confirmados
           </button>
-          <button className="px-4 lg:px-6 py-2 lg:py-3 bg-white text-[#111827] rounded-full text-sm lg:text-base font-semibold border-2 border-[#E5E5E5] whitespace-nowrap hover:bg-gray-50 transition-colors">
+          <button 
+            className="px-4 lg:px-6 py-2 lg:py-3 bg-white rounded-full text-sm lg:text-base font-semibold border-2 whitespace-nowrap hover:bg-gray-50 transition-colors"
+            style={{ borderColor: COLORS.mid, color: COLORS.text }}
+          >
             Pendentes
           </button>
         </div>
@@ -75,9 +93,10 @@ export function Appointments() {
           {appointments.map((appointment) => (
             <div
               key={appointment.id}
-              className="bg-white rounded-2xl p-4 lg:p-6 shadow-sm border border-[#E5E5E5] hover:shadow-lg transition-shadow cursor-pointer"
+              className="bg-white rounded-2xl p-4 lg:p-6 shadow-sm hover:shadow-lg transition-shadow cursor-pointer"
+              style={{ borderColor: COLORS.mid, borderWidth: '1px' }}
             >
-              {/* Header da card */}
+              {/* Header with image and status */}
               <div className="flex items-start justify-between mb-3 lg:mb-4">
                 <div className="flex items-center gap-3 flex-1">
                   <img
@@ -86,10 +105,10 @@ export function Appointments() {
                     className="w-12 h-12 lg:w-16 lg:h-16 rounded-full object-cover"
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-[#111827] text-sm lg:text-base truncate">
+                    <h3 className="font-semibold text-sm lg:text-base truncate" style={{ color: COLORS.text }}>
                       {appointment.barber}
                     </h3>
-                    <p className="text-xs lg:text-sm text-gray-600">{appointment.service}</p>
+                    <p className="text-xs lg:text-sm" style={{ color: COLORS.textSecondary }}>{appointment.service}</p>
                   </div>
                 </div>
                 <span
@@ -102,42 +121,47 @@ export function Appointments() {
               </div>
 
               {/* Divider */}
-              <div className="border-t border-[#E5E5E5] my-3 lg:my-4"></div>
+              <div className="border-t my-3 lg:my-4" style={{ borderColor: COLORS.mid }}></div>
 
               {/* Details */}
               <div className="grid grid-cols-2 gap-3 lg:gap-4 mb-3 lg:mb-4">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 lg:w-5 lg:h-5 text-[#F97316] flex-shrink-0" />
-                  <span className="text-xs lg:text-sm text-gray-700">{appointment.date}</span>
+                  <Calendar className="w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0" style={{ color: COLORS.accent }} />
+                  <span className="text-xs lg:text-sm" style={{ color: COLORS.textSecondary }}>{appointment.date}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 lg:w-5 lg:h-5 text-[#F97316] flex-shrink-0" />
-                  <span className="text-xs lg:text-sm text-gray-700">{appointment.time}</span>
+                  <Clock className="w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0" style={{ color: COLORS.accent }} />
+                  <span className="text-xs lg:text-sm" style={{ color: COLORS.textSecondary }}>{appointment.time}</span>
                 </div>
               </div>
 
               {/* Duration */}
-              <div className="flex items-center gap-2 mb-3 lg:mb-4 text-xs lg:text-sm text-gray-600">
+              <div className="flex items-center gap-2 mb-3 lg:mb-4 text-xs lg:text-sm" style={{ color: COLORS.textSecondary }}>
                 <span>⏱️</span>
                 <span>Duração: {appointment.duration}</span>
               </div>
 
               {/* Footer */}
-              <div className="flex items-center justify-between pt-3 lg:pt-4 border-t border-[#E5E5E5]">
+              <div className="flex items-center justify-between pt-3 lg:pt-4" style={{ borderColor: COLORS.mid, borderTopWidth: '1px' }}>
                 <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-3 h-3 lg:w-4 lg:h-4 ${
-                        i < appointment.rating
-                          ? 'fill-[#F97316] text-[#F97316]'
-                          : 'text-gray-300'
-                      }`}
+                      className="w-3 h-3 lg:w-4 lg:h-4"
+                      style={{
+                        fill: i < appointment.rating ? COLORS.accent : 'transparent',
+                        color: i < appointment.rating ? COLORS.accent : '#D1D5DB'
+                      }}
                     />
                   ))}
-                  <span className="text-xs lg:text-sm text-gray-600 ml-1">({appointment.rating})</span>
+                  <span className="text-xs lg:text-sm ml-1" style={{ color: COLORS.textSecondary }}>({appointment.rating})</span>
                 </div>
-                <button className="text-[#F97316] hover:text-[#E67E0D] p-1 hover:bg-orange-50 rounded-lg transition-colors">
+                <button 
+                  className="p-1 rounded-lg transition-colors"
+                  style={{ color: COLORS.accent }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.accentLight)}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                >
                   <ChevronRight className="w-4 h-4 lg:w-5 lg:h-5" />
                 </button>
               </div>
@@ -147,20 +171,33 @@ export function Appointments() {
 
         {/* CTA Button */}
         <div className="flex justify-center mt-6 lg:mt-8">
-          <button className="w-full lg:w-auto px-8 lg:px-12 bg-[#F97316] hover:bg-[#E67E0D] text-white font-bold py-3 lg:py-4 rounded-full transition-colors text-base lg:text-lg">
+          <button 
+            className="w-full lg:w-auto px-8 lg:px-12 text-white font-bold py-3 lg:py-4 rounded-full transition-colors text-base lg:text-lg"
+            style={{ backgroundColor: COLORS.accent }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.accentDark)}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.accent)}
+          >
             + Agendar Nova Consulta
           </button>
         </div>
 
         {/* Upcoming Special Offer */}
-        <div className="mt-8 lg:mt-12 bg-gradient-to-r from-[#F97316] to-orange-500 rounded-2xl p-4 lg:p-8 text-white max-w-2xl mx-auto w-full">
+        <div className="mt-8 lg:mt-12 rounded-2xl p-4 lg:p-8 text-white max-w-2xl mx-auto w-full" style={{ background: `linear-gradient(to right, ${COLORS.accent}, #ff9247)` }}>
           <h3 className="font-bold text-base lg:text-xl mb-1 lg:mb-2">Promoção Especial!</h3>
           <p className="text-sm lg:text-base mb-3 lg:mb-4">Ganhe 15% de desconto no seu próximo corte</p>
-          <button className="w-full bg-white text-[#F97316] font-semibold py-2 lg:py-3 rounded-lg text-sm lg:text-base hover:bg-gray-100 transition-colors">
+          <button 
+            className="w-full font-semibold py-2 lg:py-3 rounded-lg text-sm lg:text-base transition-colors"
+            style={{ backgroundColor: 'white', color: COLORS.accent }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'white')}
+          >
             Ver Detalhes
           </button>
         </div>
       </div>
+
+      {/* Padding para mobile nav */}
+      <div className="h-20 lg:h-24"></div>
     </div>
   );
 }
