@@ -8,11 +8,11 @@ const userRouter = Router();
 userRouter.get("/", UserController.findAll);
 userRouter.get("/:id", UserController.findById);
 userRouter.get("/role/:role", UserController.findByRole);
-userRouter.get("/barbershop/:barbershopId", UserController.findByBarbershopId);
+userRouter.get("/business/:businessId", UserController.findByBusinessId);
 
 // Protected routes
 userRouter.post("/", authMiddleware, UserController.create);
-userRouter.post("/barber", authMiddleware, UserController.createBarber);
+userRouter.post("/employee", authMiddleware, UserController.createBarber);
 userRouter.patch("/:id", authMiddleware, UserController.update);
 userRouter.delete("/:id", authMiddleware, UserController.delete);
 

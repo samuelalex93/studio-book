@@ -74,6 +74,7 @@ export class UserController {
   }
 
   static async createBarber(req: Request, res: Response) {
+    // manager id comes from JWT claim
     try {
       const managerId = (req as any).user?.id;
       if (!managerId) {
@@ -100,10 +101,10 @@ export class UserController {
     }
   }
 
-  static async findByBarbershopId(req: Request, res: Response) {
+  static async findByBusinessId(req: Request, res: Response) {
     try {
-      const { barbershopId } = req.params;
-      const users = await UserService.findByBarbershopId(barbershopId as string);
+      const { businessId } = req.params;
+      const users = await UserService.findByBusinessId(businessId as string);
       return res.json(users);
     } catch (error) {
       return res.status(500).json({ message: "Internal server error" });

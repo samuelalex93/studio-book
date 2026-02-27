@@ -3,11 +3,21 @@ import { CreateUserInput, UpdateUserInput, User } from "./user.entity";
 
 export class UserRepository {
   static async create(data: CreateUserInput): Promise<User> {
-    const { name, email, password, role, barbershop_id, refresh_token } = data;
+    const {
+      name,
+      email,
+      password,
+      role,
+      business_id,
+      cpf_cnpj,
+      avatar_image,
+      is_active,
+      refresh_token,
+    } = data;
 
     const query = `
-      INSERT INTO users (id, name, email, password, role, barbershop_id, refresh_token)
-      VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6)
+      INSERT INTO users (id, name, email, password, role, business_id, cpf_cnpj, avatar_image, is_active, refresh_token)
+      VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING *
     `;
 
@@ -16,7 +26,10 @@ export class UserRepository {
       email,
       password,
       role,
-      barbershop_id || null,
+      business_id || null,
+      cpf_cnpj || null,
+      avatar_image || null,
+      is_active !== undefined ? is_active : true,
       refresh_token || null,
     ]);
 
@@ -62,10 +75,10 @@ export class UserRepository {
     return result.rows;
   }
 
-  static async findByBarbershopId(barbershop_id: string): Promise<User[]> {
+  static async findByBusinessId(business_id: string): Promise<User[]> {
     const query =
-      "SELECT * FROM users WHERE barbershop_id = $1 ORDER BY created_at DESC";
-    const result = await pool.query(query, [barbershop_id]);
+      "SELECT * FROM users WHERE business_id = $1 ORDER BY created_at DESC";
+    const result = await pool.query(query, [business_id]);
 
     return result.rows;
   }
@@ -91,9 +104,21 @@ export class UserRepository {
       fields.push(`role = $${paramCount++}`);
       values.push(data.role);
     }
-    if (data.barbershop_id !== undefined) {
-      fields.push(`barbershop_id = $${paramCount++}`);
-      values.push(data.barbershop_id);
+    if (data.business_id !== undefined) {
+      fields.push(`business_id = $${paramCount++}`);
+      values.push(data.business_id);
+    }
+    if (data.cpf_cnpj !== undefined) {
+      fields.push(`cpf_cnpj = $${paramCount++}`);
+      values.push(data.cpf_cnpj);
+    }
+    if (data.avatar_image !== undefined) {
+      fields.push(`avatar_image = $${paramCount++}`);
+      values.push(data.avatar_image);
+    }
+    if (data.is_active !== undefined) {
+      fields.push(`is_active = $${paramCount++}`);
+      values.push(data.is_active);
     }
     if (data.refresh_token !== undefined) {
       fields.push(`refresh_token = $${paramCount++}`);

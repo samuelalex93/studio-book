@@ -5,6 +5,10 @@ import { User, UserRole } from "./user.entity";
 
 export class UserService {
   static async create(data: CreateUserDTO): Promise<UserResponseDTO> {
+    // ensure default active state
+    if (data.is_active === undefined) {
+      data.is_active = true;
+    }
     const emailExists = await UserRepository.exists(data.email);
     if (emailExists) {
       throw new AppError("Email already in use", 409);
@@ -80,7 +84,7 @@ export class UserService {
       throw new AppError("Manager not found", 404);
     }
 
-    if (manager.role !== "MANAGER") {
+    if (manager.role !== UserRole.GERENTE && manager.role !== UserRole.MEGAZORD) {
       throw new AppError("Only managers can create barbers", 403);
     }
 
@@ -91,9 +95,9 @@ export class UserService {
 
     const barber = await UserRepository.create({
       ...data,
-      role: "BARBER" as UserRole,
-      barbershop_id: manager.barbershop_id,
-    });
+      role: UserRole.BARBEIRO,
+      business_id: manager.business_id,
+    } as any);
 
     return UserResponseDTO.fromEntity(barber);
   }
@@ -103,8 +107,8 @@ export class UserService {
     return users.map((user) => UserResponseDTO.fromEntity(user));
   }
 
-  static async findByBarbershopId(barbershopId: string) {
-    const users = await UserRepository.findByBarbershopId(barbershopId);
+  static async findByBusinessId(businessId: string) {
+    const users = await UserRepository.findByBusinessId(businessId);
     return users.map((user) => UserResponseDTO.fromEntity(user));
   }
 }

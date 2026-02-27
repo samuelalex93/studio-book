@@ -1,8 +1,9 @@
 export enum UserRole {
-  OWNER = "OWNER",
-  MANAGER = "MANAGER",
-  BARBER = "BARBER",
-  CLIENT = "CLIENT",
+  CLIENTE = "CLIENTE",
+  BARBEIRO = "BARBEIRO",
+  PROPRIETARIO = "PROPRIETARIO",
+  GERENTE = "GERENTE",
+  MEGAZORD = "MEGAZORD",
 }
 
 export interface User {
@@ -11,15 +12,24 @@ export interface User {
   email: string;
   password: string;
   role: UserRole;
-  barbershop_id: string | null;
+  business_id: string | null;
+  cpf_cnpj?: string | null;
+  avatar_image?: string | null;
+  is_active?: boolean;
   refresh_token: string | null;
   created_at: Date;
+  updated_at?: Date;
 }
 
-export type CreateUserInput = Omit<User, "id" | "created_at" | "refresh_token"> & {
+export type CreateUserInput = Omit<
+  User,
+  "id" | "created_at" | "updated_at" | "refresh_token"
+> & {
   refresh_token?: string | null;
 };
 
-export type UpdateUserInput = Partial<Omit<User, "id" | "created_at">>;
+export type UpdateUserInput = Partial<Omit<User, "id" | "created_at" | "updated_at" | "role">> & {
+  role?: UserRole;
+};
 
-export type UserResponse = Omit<User, "password">;
+export type UserResponse = Omit<User, "password" | "refresh_token">;

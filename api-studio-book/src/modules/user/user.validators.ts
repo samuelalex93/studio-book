@@ -7,10 +7,18 @@ export const createUserSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   role: z
-    .enum([UserRole.OWNER, UserRole.MANAGER, UserRole.BARBER, UserRole.CLIENT])
+    .enum([
+      UserRole.CLIENTE,
+      UserRole.BARBEIRO,
+      UserRole.PROPRIETARIO,
+      UserRole.GERENTE,
+      UserRole.MEGAZORD,
+    ])
     .optional()
-    .default(UserRole.CLIENT),
-  barbershop_id: z.string().uuid("Invalid barbershop ID").optional().nullable(),
+    .default(UserRole.CLIENTE),
+  business_id: z.string().uuid("Invalid business ID").optional().nullable(),
+  cpf_cnpj: z.string().optional().nullable(),
+  avatar_image: z.string().url("Invalid URL").optional().nullable(),
 });
 
 export const updateUserSchema = z.object({
@@ -18,9 +26,18 @@ export const updateUserSchema = z.object({
   email: z.string().email("Invalid email address").optional(),
   password: z.string().min(6, "Password must be at least 6 characters").optional(),
   role: z
-    .enum([UserRole.OWNER, UserRole.MANAGER, UserRole.BARBER, UserRole.CLIENT])
+    .enum([
+      UserRole.CLIENTE,
+      UserRole.BARBEIRO,
+      UserRole.PROPRIETARIO,
+      UserRole.GERENTE,
+      UserRole.MEGAZORD,
+    ])
     .optional(),
-  barbershop_id: z.string().uuid("Invalid barbershop ID").optional().nullable(),
+  business_id: z.string().uuid("Invalid business ID").optional().nullable(),
+  cpf_cnpj: z.string().optional().nullable(),
+  avatar_image: z.string().url("Invalid URL").optional().nullable(),
+  is_active: z.boolean().optional(),
 });
 
 export const loginSchema = z.object({
