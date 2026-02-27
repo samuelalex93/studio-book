@@ -7,13 +7,13 @@ const appointmentRouter = Router();
 // Public routes
 appointmentRouter.get("/", AppointmentController.findAll);
 appointmentRouter.get("/:id", AppointmentController.findById);
-appointmentRouter.get("/barber/:owner_id", AppointmentController.findByBarberId);
+appointmentRouter.get("/owner/:owner_id", AppointmentController.findByOwnerId);
 appointmentRouter.get("/client/:client_id", AppointmentController.findByClientId);
-appointmentRouter.get("/barbershop/:business_id", AppointmentController.findByBarbershopId);
+appointmentRouter.get("/business/:business_id", AppointmentController.findByBusinessId);
 
 // Protected routes
 appointmentRouter.post(
-  "/barber/:owner_id/barbershop/:business_id",
+  "/owner/:owner_id/business/:business_id",
   authMiddleware,
   AppointmentController.create
 );

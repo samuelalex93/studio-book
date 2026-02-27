@@ -8,7 +8,7 @@ export class ServiceController {
       const { business_id } = req.params;
 
       if (!business_id) {
-        return res.status(400).json({ message: "Barbershop ID is required" });
+        return res.status(400).json({ message: "Business ID is required" });
       }
 
       const service = await ServiceService.create(req.body, business_id as string);
@@ -48,7 +48,7 @@ export class ServiceController {
     }
   }
 
-  static async findByBarbershopId(req: Request, res: Response) {
+  static async findByBusinessId(req: Request, res: Response) {
     try {
       const { business_id } = req.params;
       const services = await ServiceService.findByBusinessId(business_id as string);

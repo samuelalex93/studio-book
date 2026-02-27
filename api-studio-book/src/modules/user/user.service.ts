@@ -100,7 +100,7 @@ export class UserService {
 
     const barber = await UserRepository.create({
       ...data,
-      role: UserRole.BARBEIRO,
+      role: UserRole.FUNCIONARIO,
       business_id: manager.business_id,
     } as any);
 

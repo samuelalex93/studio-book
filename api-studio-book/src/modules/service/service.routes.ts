@@ -8,7 +8,7 @@ const serviceRouter = Router();
 // Public routes
 serviceRouter.get("/", ServiceController.findAll);
 serviceRouter.get("/:id", ServiceController.findById);
-serviceRouter.get("/barbershop/:business_id", ServiceController.findByBarbershopId);
+serviceRouter.get("/business/:business_id", ServiceController.findByBusinessId);
 
 // Protected routes
 serviceRouter.post(

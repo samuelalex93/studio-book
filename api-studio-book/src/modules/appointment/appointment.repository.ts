@@ -58,7 +58,7 @@ export class AppointmentRepository {
     };
   }
 
-  static async findByBarberId(owner_id: string): Promise<Appointment[]> {
+  static async findByOwnerId(owner_id: string): Promise<Appointment[]> {
     const query = `
       SELECT * FROM appointments 
       WHERE owner_id = $1 
@@ -80,7 +80,7 @@ export class AppointmentRepository {
     return result.rows;
   }
 
-  static async findByBarbershopId(business_id: string): Promise<Appointment[]> {
+  static async findByBusinessId(business_id: string): Promise<Appointment[]> {
     const query = `
       SELECT * FROM appointments 
       WHERE business_id = $1 

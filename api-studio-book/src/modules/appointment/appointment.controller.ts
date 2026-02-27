@@ -54,10 +54,10 @@ export class AppointmentController {
     }
   }
 
-  static async findByBarberId(req: Request, res: Response) {
+  static async findByOwnerId(req: Request, res: Response) {
     try {
       const { owner_id } = req.params;
-      const appointments = await AppointmentService.findByBarberId(owner_id as string);
+      const appointments = await AppointmentService.findByOwnerId(owner_id as string);
       return res.json(appointments);
     } catch (error) {
       return res.status(500).json({ message: "Internal server error" });
@@ -74,10 +74,10 @@ export class AppointmentController {
     }
   }
 
-  static async findByBarbershopId(req: Request, res: Response) {
+  static async findByBusinessId(req: Request, res: Response) {
     try {
       const { business_id } = req.params;
-      const appointments = await AppointmentService.findByBarbershopId(business_id as string);
+      const appointments = await AppointmentService.findByBusinessId(business_id as string);
       return res.json(appointments);
     } catch (error) {
       return res.status(500).json({ message: "Internal server error" });

@@ -9,7 +9,7 @@ export const createUserSchema = z.object({
   role: z
     .enum([
       UserRole.CLIENTE,
-      UserRole.BARBEIRO,
+      UserRole.FUNCIONARIO,
       UserRole.PROPRIETARIO,
       UserRole.GERENTE,
       UserRole.MEGAZORD,
@@ -28,7 +28,7 @@ export const updateUserSchema = z.object({
   role: z
     .enum([
       UserRole.CLIENTE,
-      UserRole.BARBEIRO,
+      UserRole.FUNCIONARIO,
       UserRole.PROPRIETARIO,
       UserRole.GERENTE,
       UserRole.MEGAZORD,

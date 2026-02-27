@@ -17,13 +17,13 @@ export class AppointmentService {
       throw new AppError("Service not found", 404);
     }
 
-    // Validate barber exists and is in the barbershop
+    // Validate barber exists and is in the business
     const barber = await UserRepository.findById(owner_id);
     if (!barber) {
       throw new AppError("Barber not found", 404);
     }
     if (barber.business_id !== business_id) {
-      throw new AppError("Barber does not work at this barbershop", 400);
+      throw new AppError("Barber does not work at this business", 400);
     }
 
     // Validate client exists
@@ -78,8 +78,8 @@ export class AppointmentService {
     return AppointmentResponseDTO.fromEntity(appointment);
   }
 
-  static async findByBarberId(owner_id: string) {
-    const appointments = await AppointmentRepository.findByBarberId(owner_id);
+  static async findByOwnerId(owner_id: string) {
+    const appointments = await AppointmentRepository.findByOwnerId(owner_id);
     return appointments.map((a) => AppointmentResponseDTO.fromEntity(a));
   }
 
@@ -88,8 +88,8 @@ export class AppointmentService {
     return appointments.map((a) => AppointmentResponseDTO.fromEntity(a));
   }
 
-  static async findByBarbershopId(business_id: string) {
-    const appointments = await AppointmentRepository.findByBarbershopId(business_id);
+  static async findByBusinessId(business_id: string) {
+    const appointments = await AppointmentRepository.findByBusinessId(business_id);
     return appointments.map((a) => AppointmentResponseDTO.fromEntity(a));
   }
 
