@@ -142,9 +142,9 @@ DELETE /services/:id                  - Deletar (protegido)
 ```
 GET    /appointments                              - Listar
 GET    /appointments/:id                          - Detalhes
-GET    /appointments/barber/:barber_id            - Do barbeiro
+GET    /appointments/barber/:owner_id            - Do barbeiro
 GET    /appointments/client/:client_id            - Do cliente
-GET    /appointments/barbershop/:barbershop_id    - Da barbearia
+GET    /appointments/barbershop/:business_id    - Da barbearia
 POST   /appointments/barber/:id/barbershop/:id    - Criar (protegido)
 PATCH  /appointments/:id                          - Atualizar (protegido)
 PATCH  /appointments/:id/cancel                   - Cancelar (protegido)
@@ -162,7 +162,7 @@ CREATE TABLE users (
   email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
   role TEXT CHECK (role IN ('OWNER', 'MANAGER', 'BARBER', 'CLIENT')),
-  barbershop_id UUID REFERENCES barbershops(id),
+  business_id UUID REFERENCES barbershops(id),
   refresh_token TEXT,
   created_at TIMESTAMP DEFAULT NOW()
 );
@@ -184,16 +184,16 @@ CREATE TABLE services (
   description TEXT,
   price NUMERIC(10,2) NOT NULL,
   duration_minutes INTEGER NOT NULL,
-  barbershop_id UUID REFERENCES barbershops(id) ON DELETE CASCADE,
+  business_id UUID REFERENCES barbershops(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE appointments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  barber_id UUID REFERENCES users(id),
+  owner_id UUID REFERENCES users(id),
   client_id UUID REFERENCES users(id),
-  barbershop_id UUID REFERENCES barbershops(id),
+  business_id UUID REFERENCES barbershops(id),
   service_id UUID REFERENCES services(id),
   start_time TIMESTAMP NOT NULL,
   end_time TIMESTAMP NOT NULL,

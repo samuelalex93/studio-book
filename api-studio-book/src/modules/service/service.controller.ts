@@ -5,13 +5,13 @@ import { AppError } from "../../shared/errors/AppError";
 export class ServiceController {
   static async create(req: Request, res: Response) {
     try {
-      const { barbershop_id } = req.params;
+      const { business_id } = req.params;
 
-      if (!barbershop_id) {
+      if (!business_id) {
         return res.status(400).json({ message: "Barbershop ID is required" });
       }
 
-      const service = await ServiceService.create(req.body, barbershop_id as string);
+      const service = await ServiceService.create(req.body, business_id as string);
       return res.status(201).json(service);
     } catch (error) {
       if (error instanceof AppError) {
@@ -50,8 +50,8 @@ export class ServiceController {
 
   static async findByBarbershopId(req: Request, res: Response) {
     try {
-      const { barbershop_id } = req.params;
-      const services = await ServiceService.findByBarbershopId(barbershop_id as string);
+      const { business_id } = req.params;
+      const services = await ServiceService.findByBusinessId(business_id as string);
       return res.json(services);
     } catch (error) {
       return res.status(500).json({ message: "Internal server error" });

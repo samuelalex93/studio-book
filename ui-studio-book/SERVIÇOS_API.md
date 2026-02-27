@@ -168,7 +168,7 @@ interface User {
   name: string;
   email: string;
   role: UserRole;
-  barbershop_id?: string;
+  business_id?: string;
 }
 
 // Barbearias
@@ -188,16 +188,16 @@ interface Service {
   description?: string;
   price: number;
   duration_minutes: number;
-  barbershop_id: string;
+  business_id: string;
 }
 
 // Agendamentos
 interface Appointment {
   id: string;
   service_id: string;
-  barber_id: string;
+  owner_id: string;
   client_id: string;
-  barbershop_id: string;
+  business_id: string;
   start_time: string;
   end_time: string;
   status: AppointmentStatus;

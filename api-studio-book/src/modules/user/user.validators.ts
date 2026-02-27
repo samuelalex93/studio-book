@@ -18,7 +18,7 @@ export const createUserSchema = z.object({
     .default(UserRole.CLIENTE),
   business_id: z.string().uuid("Invalid business ID").optional().nullable(),
   cpf_cnpj: z.string().optional().nullable(),
-  avatar_image: z.string().url("Invalid URL").optional().nullable(),
+  avatar_image: z.string().max(500).optional().nullable(),
 });
 
 export const updateUserSchema = z.object({
@@ -36,7 +36,7 @@ export const updateUserSchema = z.object({
     .optional(),
   business_id: z.string().uuid("Invalid business ID").optional().nullable(),
   cpf_cnpj: z.string().optional().nullable(),
-  avatar_image: z.string().url("Invalid URL").optional().nullable(),
+  avatar_image: z.string().max(500).optional().nullable(),
   is_active: z.boolean().optional(),
 });
 

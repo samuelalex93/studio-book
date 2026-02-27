@@ -7,5 +7,5 @@ export const createUserSchema = z.object({
   role: z.enum(["CLIENTE", "BARBEIRO", "PROPRIETARIO", "GERENTE", "MEGAZORD"]),
   business_id: z.string().uuid().optional().nullable(),
   cpf_cnpj: z.string().optional().nullable(),
-  avatar_image: z.string().url().optional().nullable(),
+  avatar_image: z.string().max(500).optional().nullable(),
 });

@@ -3,11 +3,20 @@ import { CreateServiceInput, UpdateServiceInput, Service } from "./service.entit
 
 export class ServiceRepository {
   static async create(data: CreateServiceInput): Promise<Service> {
-    const { name, description, price, duration_minutes, barbershop_id } = data;
+    const { name, description, price, duration_minutes, business_id, category_id, is_active } = data;
 
     const query = `
-      INSERT INTO services (id, name, description, price, duration_minutes, barbershop_id)
-      VALUES (gen_random_uuid(), $1, $2, $3, $4, $5)
+      INSERT INTO services (
+        id,
+        name,
+        description,
+        price,
+        duration_minutes,
+        business_id,
+        category_id,
+        is_active
+      )
+      VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7)
       RETURNING *
     `;
 
@@ -16,7 +25,9 @@ export class ServiceRepository {
       description || null,
       price,
       duration_minutes,
-      barbershop_id,
+      business_id,
+      category_id ?? null,
+      is_active ?? true,
     ]);
 
     return result.rows[0];
@@ -51,13 +62,13 @@ export class ServiceRepository {
     };
   }
 
-  static async findByBarbershopId(barbershop_id: string): Promise<Service[]> {
+  static async findByBusinessId(business_id: string): Promise<Service[]> {
     const query = `
       SELECT * FROM services 
-      WHERE barbershop_id = $1 
+      WHERE business_id = $1 
       ORDER BY created_at DESC
     `;
-    const result = await pool.query(query, [barbershop_id]);
+    const result = await pool.query(query, [business_id]);
 
     return result.rows;
   }
@@ -83,6 +94,14 @@ export class ServiceRepository {
       fields.push(`duration_minutes = $${paramCount++}`);
       values.push(data.duration_minutes);
     }
+    if (data.category_id !== undefined) {
+      fields.push(`category_id = $${paramCount++}`);
+      values.push(data.category_id);
+    }
+    if (data.is_active !== undefined) {
+      fields.push(`is_active = $${paramCount++}`);
+      values.push(data.is_active);
+    }
 
     if (fields.length === 0) {
       return this.findById(id);
@@ -94,7 +113,7 @@ export class ServiceRepository {
     const query = `
       UPDATE services
       SET ${fields.join(", ")}
-      WHERE id = $${paramCount + 1}
+      WHERE id = $${paramCount}
       RETURNING *
     `;
 

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { NotFoundError, InvalidPasswordError, ForbiddenError } from "./CustomErrors";
+import { AppError } from "./AppError";
 
 export function errorHandler(
   err: unknown,
@@ -15,10 +15,8 @@ export function errorHandler(
   //   });
   // }
 
-  if (err instanceof NotFoundError || err instanceof InvalidPasswordError || err instanceof ForbiddenError) {
-    return res.status(err.statusCode).json({
-      message: err.message,
-    });
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({ message: err.message });
   }
 
   if (err instanceof Error) {

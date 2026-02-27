@@ -1,20 +1,19 @@
 import { Router } from "express";
 import { AppointmentController } from "./appointment.controller";
 import { authMiddleware } from "../../shared/middlewares/auth.midleware";
-import { authorize } from "../../shared/middlewares/rbac.middleware";
 
 const appointmentRouter = Router();
 
 // Public routes
 appointmentRouter.get("/", AppointmentController.findAll);
 appointmentRouter.get("/:id", AppointmentController.findById);
-appointmentRouter.get("/barber/:barber_id", AppointmentController.findByBarberId);
+appointmentRouter.get("/barber/:owner_id", AppointmentController.findByBarberId);
 appointmentRouter.get("/client/:client_id", AppointmentController.findByClientId);
-appointmentRouter.get("/barbershop/:barbershop_id", AppointmentController.findByBarbershopId);
+appointmentRouter.get("/barbershop/:business_id", AppointmentController.findByBarbershopId);
 
 // Protected routes
 appointmentRouter.post(
-  "/barber/:barber_id/barbershop/:barbershop_id",
+  "/barber/:owner_id/barbershop/:business_id",
   authMiddleware,
   AppointmentController.create
 );

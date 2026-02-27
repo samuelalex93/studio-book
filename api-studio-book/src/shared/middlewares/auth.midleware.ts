@@ -1,33 +1,18 @@
 import { NextFunction, Response, Request } from "express";
-import { verifyAccessToken } from "../../modules/auth/auth.jtw";
+import { validateJwt } from "../hash/jwt";
 
-// export function ensureAuthenticated(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) {
-//   const token = req.headers.authorization?.split(" ")[1]
-
-
-//   if (!token) {
-//     throw new AppError("Token missing", 401)
-//   }
-
-//   const decoded = jwt.verify(token, process.env.JWT_SECRET!)
-
-//   req.user = decoded
-//   next()
-// }
-
-// import { Request, Response, NextFunction } from "express";
-// import { verifyAccessToken } from "./jwt";
-
-// export interface AuthRequest extends Request {
-//   userId?: string;
-// }
+export interface AuthRequest extends Request {
+  userId?: string;
+  userRole?: string;
+  user?: {
+    id: string;
+    role: string;
+    email?: string;
+  };
+}
 
 export const authMiddleware = (
-  req: Request|any,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -39,8 +24,10 @@ export const authMiddleware = (
   const token = authHeader.split(" ")[1];
 
   try {
-    const payload = verifyAccessToken(token);
-    req.userId = payload.userId;
+    const payload = validateJwt(token);
+    req.userId = payload.sub;
+    req.userRole = payload.role;
+    req.user = { id: payload.sub, role: payload.role, email: payload.email };
     next();
   } catch {
     return res.status(401).json({ message: "Invalid token" });

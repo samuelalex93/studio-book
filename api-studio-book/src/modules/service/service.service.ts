@@ -5,16 +5,16 @@ import { AppError } from "../../shared/errors/AppError";
 export class ServiceService {
   static async create(
     data: CreateServiceDTO,
-    barbershop_id: string
+    business_id: string
   ): Promise<ServiceResponseDTO> {
-    if (!data.name || !data.price || !data.duration_minutes) {
+    if (!data.name || data.price === undefined || data.duration_minutes === undefined) {
       throw new AppError("Missing required fields", 400);
     }
 
     const service = await ServiceRepository.create({
       ...data,
-      barbershop_id,
-    } as any);
+      business_id,
+    });
 
     return ServiceResponseDTO.fromEntity(service);
   }
@@ -41,8 +41,8 @@ export class ServiceService {
     return ServiceResponseDTO.fromEntity(service);
   }
 
-  static async findByBarbershopId(barbershop_id: string) {
-    const services = await ServiceRepository.findByBarbershopId(barbershop_id);
+  static async findByBusinessId(business_id: string) {
+    const services = await ServiceRepository.findByBusinessId(business_id);
     return services.map((s) => ServiceResponseDTO.fromEntity(s));
   }
 

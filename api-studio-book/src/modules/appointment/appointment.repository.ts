@@ -3,28 +3,27 @@ import { CreateAppointmentInput, UpdateAppointmentInput, Appointment } from "./a
 
 export class AppointmentRepository {
   static async create(data: CreateAppointmentInput): Promise<Appointment> {
-    const { barber_id, client_id, barbershop_id, service_id, start_time, end_time, price, status } = data;
+    const { owner_id, client_id, business_id, service_id, start_time, end_time, status } = data;
 
     const query = `
       INSERT INTO appointments (
-        id, barber_id, client_id, barbershop_id, service_id, 
-        start_time, end_time, price, status
+        id, owner_id, client_id, business_id, service_id, 
+        start_time, end_time, status
       )
       VALUES (
-        gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8
+        gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7
       )
       RETURNING *
     `;
 
     const result = await pool.query(query, [
-      barber_id,
+      owner_id,
       client_id,
-      barbershop_id,
+      business_id,
       service_id,
       start_time,
       end_time,
-      price,
-      status || "SCHEDULED",
+      status || "PENDENTE",
     ]);
 
     return result.rows[0];
@@ -59,13 +58,13 @@ export class AppointmentRepository {
     };
   }
 
-  static async findByBarberId(barber_id: string): Promise<Appointment[]> {
+  static async findByBarberId(owner_id: string): Promise<Appointment[]> {
     const query = `
       SELECT * FROM appointments 
-      WHERE barber_id = $1 
+      WHERE owner_id = $1 
       ORDER BY start_time DESC
     `;
-    const result = await pool.query(query, [barber_id]);
+    const result = await pool.query(query, [owner_id]);
 
     return result.rows;
   }
@@ -81,13 +80,13 @@ export class AppointmentRepository {
     return result.rows;
   }
 
-  static async findByBarbershopId(barbershop_id: string): Promise<Appointment[]> {
+  static async findByBarbershopId(business_id: string): Promise<Appointment[]> {
     const query = `
       SELECT * FROM appointments 
-      WHERE barbershop_id = $1 
+      WHERE business_id = $1 
       ORDER BY start_time DESC
     `;
-    const result = await pool.query(query, [barbershop_id]);
+    const result = await pool.query(query, [business_id]);
 
     return result.rows;
   }
@@ -107,7 +106,7 @@ export class AppointmentRepository {
   }
 
   static async findConflicting(
-    barber_id: string,
+    owner_id: string,
     start_time: Date,
     end_time: Date,
     exclude_id?: string
@@ -115,8 +114,8 @@ export class AppointmentRepository {
     const query = exclude_id
       ? `
         SELECT * FROM appointments 
-        WHERE barber_id = $1 
-          AND status != 'CANCELLED'
+        WHERE owner_id = $1 
+          AND status != 'CANCELADO'
           AND (
             (start_time < $3 AND end_time > $2)
             OR (start_time >= $2 AND start_time < $3)
@@ -127,8 +126,8 @@ export class AppointmentRepository {
       `
       : `
         SELECT * FROM appointments 
-        WHERE barber_id = $1 
-          AND status != 'CANCELLED'
+        WHERE owner_id = $1 
+          AND status != 'CANCELADO'
           AND (
             (start_time < $3 AND end_time > $2)
             OR (start_time >= $2 AND start_time < $3)
@@ -138,8 +137,8 @@ export class AppointmentRepository {
       `;
 
     const result = exclude_id
-      ? await pool.query(query, [barber_id, start_time, end_time, exclude_id])
-      : await pool.query(query, [barber_id, start_time, end_time]);
+      ? await pool.query(query, [owner_id, start_time, end_time, exclude_id])
+      : await pool.query(query, [owner_id, start_time, end_time]);
 
     return result.rows;
   }
@@ -149,10 +148,6 @@ export class AppointmentRepository {
     const values: any[] = [];
     let paramCount = 1;
 
-    if (data.barbershop_id !== undefined) {
-      fields.push(`barbershop_id = $${paramCount++}`);
-      values.push(data.barbershop_id);
-    }
     if (data.service_id !== undefined) {
       fields.push(`service_id = $${paramCount++}`);
       values.push(data.service_id);
@@ -164,10 +159,6 @@ export class AppointmentRepository {
     if (data.end_time !== undefined) {
       fields.push(`end_time = $${paramCount++}`);
       values.push(data.end_time);
-    }
-    if (data.price !== undefined) {
-      fields.push(`price = $${paramCount++}`);
-      values.push(data.price);
     }
     if (data.status !== undefined) {
       fields.push(`status = $${paramCount++}`);
@@ -183,7 +174,7 @@ export class AppointmentRepository {
     const query = `
       UPDATE appointments
       SET ${fields.join(", ")}
-      WHERE id = $${paramCount + 1}
+      WHERE id = $${paramCount}
       RETURNING *
     `;
 

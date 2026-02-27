@@ -82,7 +82,7 @@ const newUser = await userService.create({
   email: 'maria@example.com',
   password: 'senha123',
   role: 'BARBER',
-  barbershop_id: 'shop-id'
+  business_id: 'shop-id'
 });
 
 // Atualizar usuário

@@ -6,17 +6,17 @@ export class AppointmentController {
   static async create(req: Request, res: Response) {
     try {
       const client_id = (req as any).user?.id;
-      const { barber_id, barbershop_id } = req.params;
+      const { owner_id, business_id } = req.params;
 
-      if (!client_id || !barber_id || !barbershop_id) {
+      if (!client_id || !owner_id || !business_id) {
         return res.status(400).json({ message: "Missing required parameters" });
       }
 
       const appointment = await AppointmentService.create(
         req.body,
-        barber_id as string,
+        owner_id as string,
         client_id,
-        barbershop_id as string
+        business_id as string
       );
       return res.status(201).json(appointment);
     } catch (error) {
@@ -56,8 +56,8 @@ export class AppointmentController {
 
   static async findByBarberId(req: Request, res: Response) {
     try {
-      const { barber_id } = req.params;
-      const appointments = await AppointmentService.findByBarberId(barber_id as string);
+      const { owner_id } = req.params;
+      const appointments = await AppointmentService.findByBarberId(owner_id as string);
       return res.json(appointments);
     } catch (error) {
       return res.status(500).json({ message: "Internal server error" });
@@ -76,8 +76,8 @@ export class AppointmentController {
 
   static async findByBarbershopId(req: Request, res: Response) {
     try {
-      const { barbershop_id } = req.params;
-      const appointments = await AppointmentService.findByBarbershopId(barbershop_id as string);
+      const { business_id } = req.params;
+      const appointments = await AppointmentService.findByBarbershopId(business_id as string);
       return res.json(appointments);
     } catch (error) {
       return res.status(500).json({ message: "Internal server error" });

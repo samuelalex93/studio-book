@@ -7,7 +7,7 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  barbershop_id?: string;
+  business_id?: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -37,7 +37,7 @@ export interface CreateUserRequest {
   email: string;
   password: string;
   role: UserRole;
-  barbershop_id?: string;
+  business_id?: string;
 }
 
 export interface UpdateUserRequest {
@@ -77,7 +77,7 @@ export interface Service {
   description?: string;
   price: number;
   duration_minutes: number;
-  barbershop_id: string;
+  business_id: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -99,9 +99,9 @@ export interface UpdateServiceRequest {
 export interface Appointment {
   id: string;
   service_id: string;
-  barber_id: string;
+  owner_id: string;
   client_id: string;
-  barbershop_id: string;
+  business_id: string;
   start_time: string;
   end_time: string;
   status: AppointmentStatus;

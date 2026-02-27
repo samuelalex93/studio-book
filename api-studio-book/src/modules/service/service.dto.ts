@@ -5,6 +5,8 @@ export class CreateServiceDTO {
   description?: string | null;
   price!: number;
   duration_minutes!: number;
+  category_id?: string | null;
+  is_active?: boolean;
 }
 
 export class UpdateServiceDTO {
@@ -12,6 +14,8 @@ export class UpdateServiceDTO {
   description?: string | null;
   price?: number;
   duration_minutes?: number;
+  category_id?: string | null;
+  is_active?: boolean;
 }
 
 export class ServiceResponseDTO {
@@ -20,7 +24,9 @@ export class ServiceResponseDTO {
   description!: string | null;
   price!: number;
   duration_minutes!: number;
-  barbershop_id!: string;
+  business_id!: string;
+  category_id!: string | null;
+  is_active!: boolean;
   created_at!: Date;
   updated_at!: Date;
 
@@ -31,7 +37,9 @@ export class ServiceResponseDTO {
     dto.description = service.description;
     dto.price = service.price;
     dto.duration_minutes = service.duration_minutes;
-    dto.barbershop_id = service.barbershop_id;
+    dto.business_id = service.business_id;
+    dto.category_id = service.category_id;
+    dto.is_active = service.is_active;
     dto.created_at = service.created_at;
     dto.updated_at = service.updated_at;
     return dto;

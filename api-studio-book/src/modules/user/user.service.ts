@@ -2,6 +2,7 @@ import { AppError } from "../../shared/errors/AppError";
 import { UserRepository } from "./user.repository";
 import { CreateUserDTO, UpdateUserDTO, UserResponseDTO } from "./user.dto";
 import { User, UserRole } from "./user.entity";
+import { deletePublicImageFromUrl } from "../../shared/upload/uploadImage";
 
 export class UserService {
   static async create(data: CreateUserDTO): Promise<UserResponseDTO> {
@@ -62,6 +63,10 @@ export class UserService {
 
     const updatedUser = await UserRepository.update(id, data);
     if (!updatedUser) return null;
+
+    if (data.avatar_image && user.avatar_image && data.avatar_image !== user.avatar_image) {
+      deletePublicImageFromUrl(user.avatar_image);
+    }
 
     return UserResponseDTO.fromEntity(updatedUser);
   }

@@ -59,7 +59,7 @@ curl -X GET http://localhost:3000/users/role/BARBER \
 
 ### Listar usuários de uma barbearia
 ```bash
-curl -X GET http://localhost:3000/users/barbershop/{barbershop_id} \
+curl -X GET http://localhost:3000/users/barbershop/{business_id} \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -73,7 +73,7 @@ curl -X POST http://localhost:3000/users \
     "email": "maria@example.com",
     "password": "senha123",
     "role": "BARBER",
-    "barbershop_id": "barbershop-uuid"
+    "business_id": "barbershop-uuid"
   }'
 ```
 
@@ -105,7 +105,7 @@ curl -X GET "http://localhost:3000/barbershops?page=1&limit=10"
 
 ### Buscar barbearia por ID
 ```bash
-curl -X GET http://localhost:3000/barbershops/{barbershop_id}
+curl -X GET http://localhost:3000/barbershops/{business_id}
 ```
 
 ### Buscar barbearias de um dono
@@ -128,7 +128,7 @@ curl -X POST http://localhost:3000/barbershops \
 
 ### Atualizar barbearia
 ```bash
-curl -X PATCH http://localhost:3000/barbershops/{barbershop_id} \
+curl -X PATCH http://localhost:3000/barbershops/{business_id} \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {owner_token}" \
   -d '{
@@ -139,7 +139,7 @@ curl -X PATCH http://localhost:3000/barbershops/{barbershop_id} \
 
 ### Deletar barbearia
 ```bash
-curl -X DELETE http://localhost:3000/barbershops/{barbershop_id} \
+curl -X DELETE http://localhost:3000/barbershops/{business_id} \
   -H "Authorization: Bearer {owner_token}"
 ```
 
@@ -159,12 +159,12 @@ curl -X GET http://localhost:3000/services/{service_id}
 
 ### Listar serviços de uma barbearia
 ```bash
-curl -X GET http://localhost:3000/services/barbershop/{barbershop_id}
+curl -X GET http://localhost:3000/services/barbershop/{business_id}
 ```
 
 ### Criar novo serviço
 ```bash
-curl -X POST http://localhost:3000/services/barbershop/{barbershop_id} \
+curl -X POST http://localhost:3000/services/barbershop/{business_id} \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {owner_token}" \
   -d '{
@@ -208,7 +208,7 @@ curl -X GET http://localhost:3000/appointments/{appointment_id}
 
 ### Listar agendamentos de um barbeiro
 ```bash
-curl -X GET http://localhost:3000/appointments/barber/{barber_id}
+curl -X GET http://localhost:3000/appointments/barber/{owner_id}
 ```
 
 ### Listar agendamentos de um cliente
@@ -218,12 +218,12 @@ curl -X GET http://localhost:3000/appointments/client/{client_id}
 
 ### Listar agendamentos de uma barbearia
 ```bash
-curl -X GET http://localhost:3000/appointments/barbershop/{barbershop_id}
+curl -X GET http://localhost:3000/appointments/barbershop/{business_id}
 ```
 
 ### Agendar um horário
 ```bash
-curl -X POST http://localhost:3000/appointments/barber/{barber_id}/barbershop/{barbershop_id} \
+curl -X POST http://localhost:3000/appointments/barber/{owner_id}/barbershop/{business_id} \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {client_token}" \
   -d '{

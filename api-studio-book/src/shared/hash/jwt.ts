@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { jwtSecret } from "../../config/env";
-import { ForbiddenError } from "../errors/CustomErrors";
+import { ForbiddenError } from "../errors/AppError";
 
 export interface DecodedToken extends JwtPayload {
   sub: string;

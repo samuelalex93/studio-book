@@ -7,22 +7,22 @@ import { UserRepository } from "../user/user.repository";
 export class AppointmentService {
   static async create(
     data: CreateAppointmentDTO,
-    barber_id: string,
+    owner_id: string,
     client_id: string,
-    barbershop_id: string
+    business_id: string
   ): Promise<AppointmentResponseDTO> {
-    // Validate service exists and get price
+    // Validate service exists
     const service = await ServiceRepository.findById(data.service_id);
     if (!service) {
       throw new AppError("Service not found", 404);
     }
 
     // Validate barber exists and is in the barbershop
-    const barber = await UserRepository.findById(barber_id);
+    const barber = await UserRepository.findById(owner_id);
     if (!barber) {
       throw new AppError("Barber not found", 404);
     }
-    if (barber.barbershop_id !== barbershop_id) {
+    if (barber.business_id !== business_id) {
       throw new AppError("Barber does not work at this barbershop", 400);
     }
 
@@ -34,7 +34,7 @@ export class AppointmentService {
 
     // Check for scheduling conflicts
     const conflicts = await AppointmentRepository.findConflicting(
-      barber_id,
+      owner_id,
       data.start_time,
       data.end_time
     );
@@ -44,14 +44,13 @@ export class AppointmentService {
 
     // Create appointment
     const appointment = await AppointmentRepository.create({
-      barber_id,
+      owner_id,
       client_id,
-      barbershop_id,
+      business_id,
       service_id: data.service_id,
       start_time: data.start_time,
       end_time: data.end_time,
-      price: service.price,
-      status: "SCHEDULED",
+      status: "PENDENTE",
     });
 
     return AppointmentResponseDTO.fromEntity(appointment);
@@ -79,8 +78,8 @@ export class AppointmentService {
     return AppointmentResponseDTO.fromEntity(appointment);
   }
 
-  static async findByBarberId(barber_id: string) {
-    const appointments = await AppointmentRepository.findByBarberId(barber_id);
+  static async findByBarberId(owner_id: string) {
+    const appointments = await AppointmentRepository.findByBarberId(owner_id);
     return appointments.map((a) => AppointmentResponseDTO.fromEntity(a));
   }
 
@@ -89,8 +88,8 @@ export class AppointmentService {
     return appointments.map((a) => AppointmentResponseDTO.fromEntity(a));
   }
 
-  static async findByBarbershopId(barbershop_id: string) {
-    const appointments = await AppointmentRepository.findByBarbershopId(barbershop_id);
+  static async findByBarbershopId(business_id: string) {
+    const appointments = await AppointmentRepository.findByBarbershopId(business_id);
     return appointments.map((a) => AppointmentResponseDTO.fromEntity(a));
   }
 
@@ -109,7 +108,7 @@ export class AppointmentService {
       const endTime = data.end_time || appointment.end_time;
 
       const conflicts = await AppointmentRepository.findConflicting(
-        appointment.barber_id,
+        appointment.owner_id,
         startTime,
         endTime,
         id
@@ -140,12 +139,12 @@ export class AppointmentService {
       throw new AppError("Appointment not found", 404);
     }
 
-    if (appointment.status === "CANCELLED") {
+    if (appointment.status === "CANCELADO") {
       throw new AppError("Appointment is already cancelled", 400);
     }
 
     const updated = await AppointmentRepository.update(id, {
-      status: "CANCELLED",
+      status: "CANCELADO",
     });
     if (!updated) return null;
 
