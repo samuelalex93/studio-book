@@ -16,7 +16,7 @@ src/
 │   ├── api.ts                    # Configuração base do axios
 │   ├── auth.service.ts           # Serviço de autenticação
 │   ├── user.service.ts           # Serviço de usuários
-│   ├── barbershop.service.ts     # Serviço de barbearias
+│   ├── business.service.ts       # Serviço de negocios
 │   ├── service.service.ts        # Serviço de serviços (cortes, etc)
 │   ├── appointment.service.ts    # Serviço de agendamentos
 │   ├── index.ts                  # Exportações centralizadas
@@ -54,23 +54,23 @@ VITE_API_BASE_URL=http://localhost:3000
 - `list()` - Listar usuários (paginado)
 - `getById()` - Buscar por ID
 - `getByRole()` - Listar por role (BARBER, CLIENT, OWNER, MANAGER)
-- `getByBarbershop()` - Listar por barbearia
+- `getByBusiness()` - Listar por negocio
 - `create()` - Criar novo usuário
 - `update()` - Atualizar usuário
 - `delete()` - Deletar usuário
 
-### 3. **barbershopService** - Gerenciamento de Barbearias
-- `list()` - Listar barbearias (paginado)
+### 3. **businessService** - Gerenciamento de Negocios
+- `list()` - Listar negocios (paginado)
 - `getById()` - Buscar por ID
 - `getByOwner()` - Listar por proprietário
-- `create()` - Criar barbearia
-- `update()` - Atualizar barbearia
-- `delete()` - Deletar barbearia
+- `create()` - Criar negocio
+- `update()` - Atualizar negocio
+- `delete()` - Deletar negocio
 
 ### 4. **serviceService** - Gerenciamento de Serviços
 - `list()` - Listar serviços (paginado)
 - `getById()` - Buscar por ID
-- `getByBarbershop()` - Listar por barbearia
+- `getByBusiness()` - Listar por negocio
 - `create()` - Criar serviço
 - `update()` - Atualizar serviço
 - `delete()` - Deletar serviço
@@ -78,9 +78,9 @@ VITE_API_BASE_URL=http://localhost:3000
 ### 5. **appointmentService** - Gerenciamento de Agendamentos
 - `list()` - Listar agendamentos (paginado)
 - `getById()` - Buscar por ID
-- `getByBarber()` - Listar por barbeiro
+- `getByOwner()` - Listar por pro
 - `getByClient()` - Listar por cliente
-- `getByBarbershop()` - Listar por barbearia
+- `getByBusiness()` - Listar por negocio
 - `create()` - Agendar horário
 - `update()` - Atualizar agendamento
 - `cancel()` - Cancelar agendamento
@@ -91,8 +91,8 @@ VITE_API_BASE_URL=http://localhost:3000
 ### Importação Simples
 
 ```typescript
-import { authService, userService, barbershopService, serviceService, appointmentService } from '@/services';
-import type { User, Barbershop, Appointment } from '@/types';
+import { authService, userService, businessService, serviceService, appointmentService } from '@/services';
+import type { User, Business, Appointment } from '@/types';
 ```
 
 ### Exemplo de Login
@@ -123,8 +123,8 @@ try {
 
 ```typescript
 const appointment = await appointmentService.create(
-  'barber-uuid',
-  'barbershop-uuid',
+  'owner-uuid',
+  'bussiness-uuid',
   {
     service_id: 'service-uuid',
     start_time: '2024-03-01T14:00:00Z',
@@ -171,8 +171,8 @@ interface User {
   business_id?: string;
 }
 
-// Barbearias
-interface Barbershop {
+// Business
+interface Business {
   id: string;
   name: string;
   description?: string;

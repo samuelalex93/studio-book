@@ -21,10 +21,10 @@ export const appointmentService = {
   },
 
   /**
-   * Listar agendamentos de um barbeiro
+   * Listar agendamentos de um propr
    */
-  getByBarber: async (barberId: string): Promise<Appointment[]> => {
-    const response = await api.get(`/appointments/barber/${barberId}`);
+  getByOwner: async (ownerId: string): Promise<Appointment[]> => {
+    const response = await api.get(`/appointments/owner/${ownerId}`);
     return response.data;
   },
 
@@ -39,8 +39,8 @@ export const appointmentService = {
   /**
    * Listar agendamentos de uma barbearia
    */
-  getByBarbershop: async (barbershopId: string): Promise<Appointment[]> => {
-    const response = await api.get(`/appointments/barbershop/${barbershopId}`);
+  getByBusiness: async (businessId: string): Promise<Appointment[]> => {
+    const response = await api.get(`/appointments/business/${businessId}`);
     return response.data;
   },
 
@@ -48,12 +48,12 @@ export const appointmentService = {
    * Agendar um horário
    */
   create: async (
-    barberId: string,
-    barbershopId: string,
+    ownerId: string,
+    businessId: string,
     data: CreateAppointmentRequest
   ): Promise<Appointment> => {
     const response = await api.post(
-      `/appointments/barber/${barberId}/barbershop/${barbershopId}`,
+      `/appointments/owner/${ownerId}/business/${businessId}`,
       data
     );
     return response.data;

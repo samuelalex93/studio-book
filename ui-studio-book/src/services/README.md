@@ -19,7 +19,7 @@ Se não configurado, a URL padrão é `http://localhost:3000`.
 Você pode importar todos os serviços:
 
 ```typescript
-import { authService, userService, barbershopService, serviceService, appointmentService } from '@/services';
+import { authService, userService, businessService, serviceService, appointmentService } from '@/services';
 ```
 
 Ou importar serviços específicos:
@@ -74,7 +74,7 @@ const user = await userService.getById('user-id');
 const barbers = await userService.getByRole('BARBER');
 
 // Listar por barbearia
-const shopUsers = await userService.getByBarbershop('barbershop-id');
+const shopUsers = await userService.getByBusiness('business-id');
 
 // Criar usuário
 const newUser = await userService.create({
@@ -99,16 +99,16 @@ await userService.delete('user-id');
 
 ```typescript
 // Listar barbearias
-const barbershops = await barbershopService.list(1, 10);
+const businesses = await businessService.list(1, 10);
 
 // Buscar por ID
-const shop = await barbershopService.getById('shop-id');
+const shop = await businessService.getById('shop-id');
 
 // Listar por proprietário
-const ownerShops = await barbershopService.getByOwner('owner-id');
+const ownerShops = await businessService.getByOwner('owner-id');
 
 // Criar barbearia
-const newShop = await barbershopService.create({
+const newShop = await businessService.create({
   name: 'Barbearia do João',
   description: 'Melhor barbearia da rua',
   address: 'Rua Principal, 123',
@@ -116,13 +116,13 @@ const newShop = await barbershopService.create({
 });
 
 // Atualizar barbearia
-const updated = await barbershopService.update('shop-id', {
+const updated = await businessService.update('shop-id', {
   name: 'Novo Nome',
   phone: '11988888888'
 });
 
 // Deletar barbearia
-await barbershopService.delete('shop-id');
+await businessService.delete('shop-id');
 ```
 
 ### Serviços (Cortes, etc)
@@ -164,18 +164,18 @@ const appointments = await appointmentService.list(1, 10);
 // Buscar por ID
 const appointment = await appointmentService.getById('appointment-id');
 
-// Listar por barbeiro
-const barberAppointments = await appointmentService.getByBarber('barber-id');
+// Listar por proprietario
+const ownerAppointments = await appointmentService.getByProprietario('owner-id');
 
 // Listar por cliente
 const clientAppointments = await appointmentService.getByClient('client-id');
 
-// Listar por barbearia
-const shopAppointments = await appointmentService.getByBarbershop('shop-id');
+// Listar por business
+const shopAppointments = await appointmentService.getByBusiness('shop-id');
 
 // Agendar horário
 const newAppointment = await appointmentService.create(
-  'barber-id',
+  'owner-id',
   'shop-id',
   {
     service_id: 'service-id',
